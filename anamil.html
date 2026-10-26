@@ -1,0 +1,531 @@
+<title>أنامل</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600&display=swap">
+<style>
+/* Layout: lesson rail on the right (RTL) beside one practice card: text line, keyboard guide, finger guide. */
+:root {
+  --bg: #EEF2F5;
+  --surface: #FFFFFF;
+  --surface-2: #F4F7F9;
+  --line: #DCE3E9;
+  --ink: #1D2935;
+  --muted: #66768A;
+  --accent: #3F7F8F;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #DAEAEE;
+  --ok: #2E8B68;
+  --ok-soft: #DDF0E8;
+  --bad: #CF5B57;
+  --bad-soft: #F8DEDC;
+  --f-pinky: #F3CBD0;
+  --f-ring: #F6DFB8;
+  --f-middle: #CFE6CA;
+  --f-index: #BEDDEC;
+  --f-thumb: #DCD5F0;
+  --shadow: 0 1px 2px rgba(29,41,53,.05), 0 10px 28px rgba(29,41,53,.07);
+  --font: "Readex Pro", "Segoe UI", Tahoma, system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11171D; --surface: #19212A; --surface-2: #1F2933; --line: #2C3846;
+    --ink: #E6ECF1; --muted: #93A2B3; --accent: #6DB3C4; --accent-ink: #0E1A20; --accent-soft: #213840;
+    --ok: #5CC59B; --ok-soft: #1D3A2E; --bad: #F0817D; --bad-soft: #3D2526;
+    --f-pinky: #5A3A40; --f-ring: #5B4B30; --f-middle: #3A5337; --f-index: #2F4C5C; --f-thumb: #453F63;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11171D; --surface: #19212A; --surface-2: #1F2933; --line: #2C3846;
+  --ink: #E6ECF1; --muted: #93A2B3; --accent: #6DB3C4; --accent-ink: #0E1A20; --accent-soft: #213840;
+  --ok: #5CC59B; --ok-soft: #1D3A2E; --bad: #F0817D; --bad-soft: #3D2526;
+  --f-pinky: #5A3A40; --f-ring: #5B4B30; --f-middle: #3A5337; --f-index: #2F4C5C; --f-thumb: #453F63;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.25);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.6;
+  direction: rtl;
+  padding-block: 20px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.wrap { max-width: 1040px; margin: 0 auto; display: grid; gap: 20px; }
+
+/* header */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.mark { display: flex; align-items: flex-end; gap: 3px; height: 28px; direction: ltr; }
+.mark i { display: block; width: 7px; border-radius: 4px; }
+.mark i:nth-child(1) { height: 14px; background: var(--f-pinky); }
+.mark i:nth-child(2) { height: 20px; background: var(--f-ring); }
+.mark i:nth-child(3) { height: 26px; background: var(--f-middle); }
+.mark i:nth-child(4) { height: 20px; background: var(--f-index); }
+.mark i:nth-child(5) { height: 12px; background: var(--f-thumb); }
+.brand h1 { margin: 0; font-size: 1.5rem; font-weight: 600; letter-spacing: 0; line-height: 1.2; }
+.brand p { margin: 0; color: var(--muted); font-size: .875rem; }
+.toggle {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+  padding: 6px 14px; font-size: .875rem; color: var(--muted);
+}
+.toggle[aria-pressed="true"] { color: var(--ink); border-color: var(--accent); }
+.toggle .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); transition: background .2s; }
+.toggle[aria-pressed="true"] .dot { background: var(--accent); }
+
+/* main grid */
+.main { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 20px; align-items: start; }
+.rail { display: grid; gap: 8px; min-width: 0; }
+.rail h2 { margin: 0 4px 4px; font-size: .8125rem; font-weight: 500; color: var(--muted); letter-spacing: .02em; }
+.lessons { display: grid; gap: 8px; min-width: 0; }
+.lesson {
+  text-align: right; background: var(--surface); border: 1px solid var(--line);
+  border-radius: 14px; padding: 12px 14px; display: grid; gap: 2px; min-width: 0;
+  transition: border-color .2s, transform .2s, background .2s;
+}
+.lesson:hover { transform: translateY(-1px); border-color: var(--accent); }
+.lesson[aria-current="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.lesson .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.lesson b { font-weight: 500; font-size: .9375rem; }
+.lesson small { color: var(--muted); font-size: .78rem; overflow-wrap: anywhere; }
+.stars { letter-spacing: 2px; font-size: .8rem; color: var(--line); direction: ltr; white-space: nowrap; }
+.stars .on { color: #D9A441; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 20px; display: grid; gap: 18px; min-width: 0; position: relative; }
+
+/* stats */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.stat { background: var(--surface-2); border-radius: 12px; padding: 8px 12px; display: grid; }
+.stat span { color: var(--muted); font-size: .75rem; }
+.stat b { font-size: 1.25rem; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1.3; }
+
+/* text */
+.stage { display: grid; gap: 10px; }
+.bar { height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 3px; transition: width .18s ease; }
+.text {
+  font-size: clamp(1.55rem, 4.2vw, 2.25rem); line-height: 2.1; min-height: 4.2em;
+  background: var(--surface-2); border-radius: 16px; padding: 14px 20px;
+  white-space: pre-wrap; overflow-wrap: anywhere; cursor: text; letter-spacing: 0;
+}
+.text .c { color: var(--ink); border-radius: 6px; }
+.text .c.done { color: var(--ok); }
+.text .c.cur { background: var(--accent-soft); box-shadow: 0 2px 0 var(--accent); }
+.text .c.bad { background: var(--bad-soft); box-shadow: 0 2px 0 var(--bad); }
+.hint { display: flex; align-items: center; gap: 10px; min-height: 28px; color: var(--muted); font-size: .9rem; flex-wrap: wrap; }
+.hint .swatch { width: 14px; height: 14px; border-radius: 5px; background: var(--f-index); flex: none; }
+.hint strong { color: var(--ink); font-weight: 500; }
+#sink { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+
+/* keyboard */
+.guide { display: grid; gap: 18px; }
+.guide[hidden] { display: none !important; }
+.kbwrap { overflow-x: auto; padding-bottom: 2px; }
+.kb { --u: clamp(22px, 4.3vw, 46px); direction: ltr; display: grid; gap: 4px; width: max-content; margin: 0 auto; }
+.kr { display: flex; gap: 4px; }
+.kr.o1 { margin-left: calc(var(--u) * .5); }
+.kr.o2 { margin-left: calc(var(--u) * .8); }
+.kr.o3 { margin-left: calc(var(--u) * 1.3); }
+.key {
+  width: var(--u); height: var(--u); border-radius: calc(var(--u) * .24);
+  display: grid; place-items: center; font-size: calc(var(--u) * .46); line-height: 1;
+  background: var(--surface-2); color: var(--ink); border: 1px solid transparent;
+  opacity: .5; transition: transform .12s, opacity .2s, background .2s; user-select: none;
+}
+.key.l { opacity: 1; }
+.key.f-pinky { background: var(--f-pinky); } .key.f-ring { background: var(--f-ring); }
+.key.f-middle { background: var(--f-middle); } .key.f-index { background: var(--f-index); }
+.key.f-thumb { background: var(--f-thumb); }
+.key.num { font-size: calc(var(--u) * .34); color: var(--muted); }
+.key.next { background: var(--accent); color: var(--accent-ink); opacity: 1; transform: translateY(-2px); box-shadow: 0 0 0 3px var(--accent-soft), 0 6px 14px rgba(0,0,0,.14); }
+.key.hit { transform: scale(.92); background: var(--ok-soft); }
+.key.miss { background: var(--bad-soft); animation: nudge .25s; }
+.key.space { width: calc(var(--u) * 6.5); }
+.key.home::after { content: ""; position: absolute; }
+@keyframes nudge { 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } }
+
+/* hands */
+.hands { direction: ltr; display: flex; justify-content: center; gap: clamp(20px, 6vw, 64px); }
+.hand { display: grid; gap: 6px; justify-items: center; }
+.fingers { display: flex; align-items: flex-end; gap: 6px; height: 84px; }
+.fg { display: grid; justify-items: center; gap: 4px; align-content: end; }
+.fg i { display: block; width: clamp(22px, 5.2vw, 34px); border-radius: 999px; opacity: .45; transition: opacity .2s, transform .2s, box-shadow .2s; }
+.fg span { font-size: .68rem; color: var(--muted); line-height: 1; }
+.fg.on i { opacity: 1; transform: translateY(-5px); box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--accent); }
+.hand > small { color: var(--muted); font-size: .75rem; }
+
+/* result */
+.result {
+  position: absolute; inset: 0; background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(3px); border-radius: 20px; display: grid; place-items: center; padding: 20px; z-index: 5;
+}
+.result[hidden] { display: none !important; }
+.res-in { text-align: center; display: grid; gap: 14px; justify-items: center; max-width: 380px; animation: rise .35s ease both; }
+.res-in h3 { margin: 0; font-size: 1.5rem; font-weight: 500; }
+.res-stars { font-size: 2.2rem; letter-spacing: 6px; color: var(--line); direction: ltr; line-height: 1; }
+.res-stars .on { color: #D9A441; }
+.res-stats { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.res-stats div { background: var(--surface-2); border-radius: 12px; padding: 8px 16px; display: grid; }
+.res-stats span { color: var(--muted); font-size: .75rem; }
+.res-stats b { font-weight: 500; font-size: 1.3rem; font-variant-numeric: tabular-nums; }
+.res-in p { margin: 0; color: var(--muted); font-size: .9rem; }
+.btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 20px; transition: transform .15s, border-color .2s; }
+.btn:hover { transform: translateY(-1px); border-color: var(--accent); }
+.btn.pri { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.foot { color: var(--muted); font-size: .8125rem; text-align: center; }
+
+@media (max-width: 760px) {
+  .main { grid-template-columns: minmax(0, 1fr); }
+  .lessons { display: flex; overflow-x: auto; padding-bottom: 4px; }
+  .lesson { flex: 0 0 auto; min-width: 150px; }
+  .card { padding: 14px; }
+  .text { padding: 10px 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div class="wrap" dir="rtl" lang="ar">
+  <header class="top">
+    <div class="brand">
+      <div class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <div>
+        <h1>أنامل</h1>
+        <p>تعلّم الطباعة بالعربية بالأصابع العشرة</p>
+      </div>
+    </div>
+    <button class="toggle" id="guideBtn" type="button" aria-pressed="true"><span class="dot"></span>إرشاد الأصابع</button>
+  </header>
+
+  <div class="main">
+    <aside class="rail" aria-label="الدروس">
+      <h2>الدروس</h2>
+      <div class="lessons" id="lessons"></div>
+    </aside>
+
+    <section class="card" id="card" aria-label="التدريب">
+      <div class="stats" aria-live="off">
+        <div class="stat"><span>السرعة (كلمة/د)</span><b id="sWpm">٠</b></div>
+        <div class="stat"><span>الدقة</span><b id="sAcc">١٠٠٪</b></div>
+        <div class="stat"><span>الوقت</span><b id="sTime">٠:٠٠</b></div>
+      </div>
+
+      <div class="stage">
+        <div class="bar" aria-hidden="true"><i id="prog"></i></div>
+        <div class="text" id="text" tabindex="0" aria-label="النص المطلوب كتابته"></div>
+        <div class="hint" id="hint"></div>
+        <input id="sink" type="text" inputmode="text" lang="ar" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-hidden="true" tabindex="-1">
+      </div>
+
+      <div class="guide" id="guide">
+        <div class="kbwrap"><div class="kb" id="kb" aria-hidden="true"></div></div>
+        <div class="hands" id="hands" aria-hidden="true"></div>
+      </div>
+
+      <div class="result" id="result" hidden>
+        <div class="res-in">
+          <div class="res-stars" id="rStars"></div>
+          <h3 id="rTitle"></h3>
+          <div class="res-stats">
+            <div><span>السرعة</span><b id="rWpm"></b></div>
+            <div><span>الدقة</span><b id="rAcc"></b></div>
+            <div><span>الأخطاء</span><b id="rErr"></b></div>
+          </div>
+          <p id="rNote"></p>
+          <div class="btns">
+            <button class="btn" id="again" type="button">جولة جديدة</button>
+            <button class="btn pri" id="next" type="button">الدرس التالي</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <p class="foot">يعمل التدريب على لوحة المفاتيح حتى لو كانت لغتها إنجليزية، فالأزرار تُقرأ بموضعها. على الجوال اضغط على النص لفتح لوحة المفاتيح.</p>
+</div>
+
+<script>
+/* ---------- keyboard data (Arabic 101, keyed by physical position) ---------- */
+const MAP = {
+  Backquote:'ذ',
+  KeyQ:'ض',KeyW:'ص',KeyE:'ث',KeyR:'ق',KeyT:'ف',KeyY:'غ',KeyU:'ع',KeyI:'ه',KeyO:'خ',KeyP:'ح',BracketLeft:'ج',BracketRight:'د',
+  KeyA:'ش',KeyS:'س',KeyD:'ي',KeyF:'ب',KeyG:'ل',KeyH:'ا',KeyJ:'ت',KeyK:'ن',KeyL:'م',Semicolon:'ك',Quote:'ط',
+  KeyZ:'ئ',KeyX:'ء',KeyC:'ؤ',KeyV:'ر',KeyN:'ى',KeyM:'ة',Comma:'و',Period:'ز',Slash:'ظ'
+};
+const ROWS = [
+  ['Backquote','Digit1','Digit2','Digit3','Digit4','Digit5','Digit6','Digit7','Digit8','Digit9','Digit0','Minus','Equal'],
+  ['KeyQ','KeyW','KeyE','KeyR','KeyT','KeyY','KeyU','KeyI','KeyO','KeyP','BracketLeft','BracketRight'],
+  ['KeyA','KeyS','KeyD','KeyF','KeyG','KeyH','KeyJ','KeyK','KeyL','Semicolon','Quote'],
+  ['KeyZ','KeyX','KeyC','KeyV','KeyN','KeyM','Comma','Period','Slash']
+];
+const FM = {};
+function fin(hand, finger, codes) { codes.forEach(c => FM[c] = { hand, finger }); }
+fin('L','pinky',['Backquote','Digit1','KeyQ','KeyA','KeyZ']);
+fin('L','ring',['Digit2','KeyW','KeyS','KeyX']);
+fin('L','middle',['Digit3','KeyE','KeyD','KeyC']);
+fin('L','index',['Digit4','Digit5','KeyR','KeyT','KeyF','KeyG','KeyV','KeyB']);
+fin('R','index',['Digit6','Digit7','KeyY','KeyU','KeyH','KeyJ','KeyN','KeyM']);
+fin('R','middle',['Digit8','KeyI','KeyK','Comma']);
+fin('R','ring',['Digit9','KeyO','KeyL','Period']);
+fin('R','pinky',['Digit0','Minus','Equal','KeyP','Semicolon','Quote','Slash','BracketLeft','BracketRight']);
+fin('T','thumb',['Space']);
+const FNAME = { pinky:'الخنصر', ring:'البنصر', middle:'الوسطى', index:'السبابة', thumb:'الإبهام' };
+const HNAME = { L:'الأيسر', R:'الأيمن', T:'' };
+const CH2CODE = {};
+Object.keys(MAP).forEach(c => CH2CODE[MAP[c]] = c);
+CH2CODE[' '] = 'Space';
+const DIGITS = '١٢٣٤٥٦٧٨٩٠';
+
+/* ---------- lessons ---------- */
+const HOME = 'شسيبلاتنمكط';
+const TOP = 'ضصثقفغعهخحجد';
+const BOTTOM = 'ئءؤرىةوزظذ';
+const LESSONS = [
+  { id:'home', title:'الصف الأوسط', sub:'ش س ي ب ل ا ت ن م ك ط', focus:HOME, letters:HOME,
+    words:['سلام','كلام','ناس','بيت','ليل','كتاب','سبب','بنت','لبن','سمك','ملك','مكتب','كلمات','ملابس','شمس','سليم','نسيم','تين','بنات','نبات','يمين','بلبل','كسل','ستين','بلاط','نمل','لمس','سنابل','اسم','كلب','مسك','كم','لم','لا','بيان','سلالم','مبيت'] },
+  { id:'top', title:'الصف العلوي', sub:'ض ص ث ق ف غ ع ه خ ح ج د', focus:TOP, letters:HOME+TOP,
+    words:['صحيح','قلب','عيد','جد','جميل','صديق','حديث','سعيد','ضيف','فتح','شعب','عمل','جبل','بحث','قلم','فصل','قمح','خمس','جسم','عقل','علم','حلم','سقف','نقد','حفل','مجلس','فجل','حقل','شجن','هدف','دخل','عسل','باب','سيف','فيل','ثقب','غيم','جدي'] },
+  { id:'bottom', title:'الصف السفلي', sub:'ئ ء ؤ ر ى ة و ز ظ ذ', focus:BOTTOM, letters:HOME+TOP+BOTTOM,
+    words:['رجل','وردة','مدرسة','زهرة','مرة','ورد','ولد','زيت','ريح','طريق','موز','وزير','ظهر','مؤمن','سيارة','شجرة','بحر','قمر','نور','سور','دار','جار','غرفة','مدينة','شاي','هذا','ذهب','ذكر','كرة','تمرة','طائر','سماء','ماء','هواء','دواء','عشاء','غذاء','قراءة','مؤتمر','نظر','نظام','ظلام','وظيفة'] },
+  { id:'words', title:'كلمات متنوعة', sub:'كلمات من الحياة اليومية', focus:'', letters:HOME+TOP+BOTTOM, kind:'words',
+    words:['مرحبا','شكرا','صباح الخير','مساء الخير','كيف حالك','الحمد لله','تفاحة','برتقال','حاسوب','لوحة المفاتيح','الجامعة','الطالب','الكتابة','السرعة','الدقة','التعلم','المعرفة','الصبر جميل','مدرسة','مكتبة','حديقة','سماء صافية','قهوة ساخنة','شجرة كبيرة'] },
+  { id:'sentences', title:'جمل وحكم', sub:'اكتب جملًا كاملة', focus:'', letters:HOME+TOP+BOTTOM, kind:'sentences',
+    words:['العلم نور','الصبر مفتاح الفرج','الوقت كالسيف','الكتاب خير جليس','من جد وجد','الجار قبل الدار','الصديق وقت الضيق','القراءة غذاء العقل','العقل زينة','من سار على الدرب وصل','لكل مجتهد نصيب','الوقت من ذهب','خير الكلام ما قل ودل','الحديقة جميلة في الصباح','نحب الكتابة بسرعة'] }
+];
+</script>
+
+<script>
+/* ---------- app ---------- */
+(function () {
+  const $ = id => document.getElementById(id);
+  const nf = new Intl.NumberFormat('ar-EG');
+  const n = v => nf.format(Math.round(v));
+
+  let store = {};
+  try { store = JSON.parse(localStorage.getItem('anamil-progress') || '{}') || {}; } catch (e) { store = {}; }
+  function save() { try { localStorage.setItem('anamil-progress', JSON.stringify(store)); } catch (e) {} }
+  let guideOn = true;
+  try { guideOn = localStorage.getItem('anamil-guide') !== 'off'; } catch (e) {}
+
+  const S = { li: 0, text: '', idx: 0, keys: 0, correct: 0, start: 0, done: false, timer: null };
+
+  /* keyboard + hands */
+  const kbEl = $('kb'), keyEls = {};
+  ROWS.forEach((row, ri) => {
+    const r = document.createElement('div');
+    r.className = 'kr' + (ri ? ' o' + ri : '');
+    row.forEach(code => {
+      const k = document.createElement('div');
+      const f = FM[code];
+      k.className = 'key' + (f ? ' f-' + f.finger : '');
+      if (code.indexOf('Digit') === 0) { k.classList.add('num'); k.textContent = DIGITS[(+code.slice(5) + 9) % 10]; }
+      else if (MAP[code]) k.textContent = MAP[code];
+      else k.textContent = code === 'Minus' ? '-' : '=';
+      keyEls[code] = k; r.appendChild(k);
+    });
+    kbEl.appendChild(r);
+  });
+  const sp = document.createElement('div');
+  sp.className = 'kr o1';
+  const spk = document.createElement('div');
+  spk.className = 'key space f-thumb'; spk.textContent = 'مسافة';
+  spk.style.fontSize = 'calc(var(--u) * .34)';
+  keyEls.Space = spk; sp.appendChild(spk); kbEl.appendChild(sp);
+
+  const HEIGHTS = { pinky: 44, ring: 60, middle: 70, index: 62, thumb: 40 };
+  const ORDER = { L: ['pinky','ring','middle','index','thumb'], R: ['thumb','index','middle','ring','pinky'] };
+  const handsEl = $('hands'), fingerEls = {};
+  ['L','R'].forEach(h => {
+    const hand = document.createElement('div'); hand.className = 'hand';
+    const fs = document.createElement('div'); fs.className = 'fingers';
+    ORDER[h].forEach(fn => {
+      const g = document.createElement('div'); g.className = 'fg';
+      const i = document.createElement('i'); i.style.height = HEIGHTS[fn] + 'px'; i.style.background = 'var(--f-' + fn + ')';
+      const s = document.createElement('span'); s.textContent = FNAME[fn];
+      g.appendChild(i); g.appendChild(s); fs.appendChild(g);
+      fingerEls[h + fn] = g;
+    });
+    const cap = document.createElement('small'); cap.textContent = h === 'L' ? 'اليد اليسرى' : 'اليد اليمنى';
+    hand.appendChild(fs); hand.appendChild(cap); handsEl.appendChild(hand);
+  });
+
+  function applyGuide() {
+    $('guide').hidden = !guideOn;
+    $('guideBtn').setAttribute('aria-pressed', String(guideOn));
+  }
+  $('guideBtn').addEventListener('click', () => {
+    guideOn = !guideOn; applyGuide();
+    try { localStorage.setItem('anamil-guide', guideOn ? 'on' : 'off'); } catch (e) {}
+  });
+
+  /* lessons list */
+  const listEl = $('lessons');
+  function starsHtml(c) {
+    let s = ''; for (let i = 0; i < 3; i++) s += '<span class="' + (i < c ? 'on' : '') + '">★</span>'; return s;
+  }
+  function renderLessons() {
+    listEl.innerHTML = '';
+    LESSONS.forEach((L, i) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'lesson';
+      if (i === S.li) b.setAttribute('aria-current', 'true');
+      const best = store[L.id] ? store[L.id].stars : 0;
+      b.innerHTML = '<div class="row"><b></b><span class="stars">' + starsHtml(best) + '</span></div><small></small>';
+      b.querySelector('b').textContent = L.title;
+      b.querySelector('small').textContent = L.sub;
+      b.addEventListener('click', () => { S.li = i; renderLessons(); newRound(); });
+      listEl.appendChild(b);
+    });
+  }
+
+  /* round generation */
+  function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  function makeText(L) {
+    if (L.kind === 'sentences') return shuffle(L.words).slice(0, 2).join(' ');
+    if (L.kind === 'words') { const w = shuffle(L.words), out = []; let len = 0; for (const x of w) { out.push(x); len += x.length + 1; if (len >= 40) break; } return out.join(' '); }
+    const f = L.focus.split(''), out = [];
+    for (let d = 0; d < 2; d++) { let s = ''; for (let k = 0; k < 3; k++) s += f[Math.floor(Math.random() * f.length)]; out.push(s); }
+    let len = 8; const w = shuffle(L.words);
+    for (const x of w) { out.push(x); len += x.length + 1; if (len >= 38) break; }
+    return out.join(' ');
+  }
+
+  /* text rendering */
+  const textEl = $('text'); let chEls = [];
+  function renderText() {
+    textEl.innerHTML = ''; chEls = [];
+    for (const ch of S.text) {
+      const s = document.createElement('span'); s.className = 'c'; s.textContent = ch;
+      textEl.appendChild(s); chEls.push(s);
+    }
+  }
+  function updateCursor() {
+    chEls.forEach((e, i) => { e.classList.toggle('cur', i === S.idx); e.classList.remove('bad'); });
+    $('prog').style.width = (S.idx / chEls.length * 100) + '%';
+    Object.values(keyEls).forEach(k => k.classList.remove('next'));
+    Object.values(fingerEls).forEach(f => f.classList.remove('on'));
+    const t = S.text[S.idx];
+    if (t === undefined) { $('hint').textContent = ''; return; }
+    const code = CH2CODE[t], f = FM[code];
+    if (code && keyEls[code]) keyEls[code].classList.add('next');
+    if (f) {
+      if (f.hand === 'T') { fingerEls.Lthumb.classList.add('on'); fingerEls.Rthumb.classList.add('on'); }
+      else fingerEls[f.hand + f.finger].classList.add('on');
+      const label = t === ' ' ? 'مسافة' : '«' + t + '»';
+      $('hint').innerHTML = '<span class="swatch" style="background:var(--f-' + f.finger + ')"></span><span>التالي <strong>' + label + '</strong> بـ <strong>' + FNAME[f.finger] + (f.hand === 'T' ? '' : ' ' + HNAME[f.hand]) + '</strong></span>';
+    } else {
+      $('hint').textContent = '';
+    }
+  }
+
+  /* stats */
+  function elapsed() { return S.start ? (Date.now() - S.start) / 1000 : 0; }
+  function wpm() { const m = elapsed() / 60; return m > 0.02 ? (S.correct / 5) / m : 0; }
+  function acc() { return S.keys ? S.correct / S.keys * 100 : 100; }
+  function paintStats() {
+    $('sWpm').textContent = n(wpm());
+    $('sAcc').textContent = n(acc()) + '٪';
+    const t = Math.floor(elapsed());
+    $('sTime').textContent = n(Math.floor(t / 60)) + ':' + (t % 60 < 10 ? '٠' : '') + n(t % 60);
+  }
+
+  function setLessonKeys() {
+    const L = LESSONS[S.li], set = new Set(L.letters.split(''));
+    Object.keys(keyEls).forEach(c => keyEls[c].classList.toggle('l', c === 'Space' || (MAP[c] && set.has(MAP[c])) || !MAP[c] && false));
+  }
+
+  function newRound() {
+    clearInterval(S.timer);
+    Object.assign(S, { text: makeText(LESSONS[S.li]), idx: 0, keys: 0, correct: 0, start: 0, done: false });
+    $('result').hidden = true;
+    renderText(); setLessonKeys(); updateCursor(); paintStats();
+  }
+
+  function finish() {
+    S.done = true; clearInterval(S.timer); paintStats();
+    const w = wpm(), a = acc(), errs = S.keys - S.correct;
+    const stars = a >= 95 && w >= 20 ? 3 : a >= 90 ? 2 : 1;
+    const L = LESSONS[S.li], prev = store[L.id];
+    if (!prev || stars > prev.stars || (stars === prev.stars && w > prev.wpm)) { store[L.id] = { stars, wpm: Math.round(w), acc: Math.round(a) }; save(); }
+    renderLessons();
+    $('rStars').innerHTML = starsHtml(stars);
+    $('rTitle').textContent = stars === 3 ? 'ممتاز' : stars === 2 ? 'أحسنت' : 'أكملت الدرس';
+    $('rWpm').textContent = n(w);
+    $('rAcc').textContent = n(a) + '٪';
+    $('rErr').textContent = n(errs);
+    $('rNote').textContent = stars === 3 ? 'دقة عالية وسرعة جيدة. انتقل إلى الدرس التالي.' : stars === 2 ? 'ركّز على الدقة أولًا، فالسرعة تأتي بعدها.' : 'أعد الجولة وحاول أن تقلل الأخطاء، ولا تنظر إلى لوحة المفاتيح.';
+    $('next').hidden = S.li >= LESSONS.length - 1;
+    $('result').hidden = false;
+    $('next').hidden ? $('again').focus() : $('next').focus();
+  }
+
+  /* input */
+  function press(char, code) {
+    if (S.done) return;
+    const t = S.text[S.idx];
+    if (t === undefined) return;
+    if (!S.start) { S.start = Date.now(); S.timer = setInterval(paintStats, 250); }
+    const ok = (t === ' ' && code === 'Space') || (code && MAP[code] === t) || char === t;
+    S.keys++;
+    const kEl = code && keyEls[code];
+    if (ok) {
+      S.correct++;
+      chEls[S.idx].classList.remove('cur'); chEls[S.idx].classList.add('done');
+      S.idx++;
+      if (kEl) { kEl.classList.add('hit'); setTimeout(() => kEl.classList.remove('hit'), 140); }
+      if (S.idx >= S.text.length) { updateCursor(); $('prog').style.width = '100%'; finish(); return; }
+      updateCursor();
+    } else {
+      const c = chEls[S.idx]; c.classList.add('bad');
+      setTimeout(() => c.classList.remove('bad'), 260);
+      if (kEl) { kEl.classList.add('miss'); setTimeout(() => kEl.classList.remove('miss'), 260); }
+    }
+    paintStats();
+  }
+
+  window.addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (!$('result').hidden) { return; }
+    const tag = (e.target && e.target.tagName) || '';
+    if (tag === 'BUTTON') return;
+    if (e.key === 'Unidentified' || e.key === 'Process') return;
+    const isSpace = e.code === 'Space';
+    const known = MAP[e.code] || isSpace;
+    if (!known && e.key.length !== 1) return;
+    e.preventDefault();
+    press(isSpace ? ' ' : (e.key.length === 1 ? e.key : ''), known ? e.code : '');
+  });
+
+  /* soft keyboards (phones and tablets) */
+  const sink = $('sink');
+  const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  if (coarse) {
+    textEl.addEventListener('click', () => sink.focus());
+    sink.addEventListener('input', () => {
+      const v = sink.value; sink.value = '';
+      for (const ch of v) press(ch, ch === ' ' ? 'Space' : '');
+    });
+  }
+
+  $('again').addEventListener('click', newRound);
+  $('next').addEventListener('click', () => { if (S.li < LESSONS.length - 1) { S.li++; renderLessons(); newRound(); } });
+
+  applyGuide(); renderLessons(); newRound();
+})();
+</script>
